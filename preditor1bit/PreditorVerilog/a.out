@@ -1,0 +1,199 @@
+#! /usr/bin/vvp
+:ivl_version "0.9.7 " "(v0_9_7)";
+:vpi_time_precision + 0;
+:vpi_module "system";
+:vpi_module "v2005_math";
+:vpi_module "va_math";
+S_0x11e6c60 .scope module, "test" "test" 2 11;
+ .timescale 0 0;
+v0x1220e40_0 .var "address", 6 0;
+v0x1220ef0_0 .var "clk", 0 0;
+v0x1220fa0_0 .net "din", 1 0, v0x1220d10_0; 1 drivers
+v0x1221070_0 .net "dout", 1 0, L_0x1221370; 1 drivers
+v0x1221140_0 .var "p", 0 0;
+v0x12211c0_0 .var "reset", 0 0;
+S_0x12208e0 .scope module, "CC" "fsm_table_cc" 2 38, 3 1, S_0x11e6c60;
+ .timescale 0 0;
+P_0x12209d8 .param/l "M" 3 8, C4<01>;
+P_0x1220a00 .param/l "MM" 3 8, C4<00>;
+P_0x1220a28 .param/l "P" 3 8, C4<10>;
+P_0x1220a50 .param/l "PP" 3 8, C4<11>;
+v0x1220c40_0 .alias "din", 1 0, v0x1221070_0;
+v0x1220d10_0 .var "dout", 1 0;
+v0x1220dc0_0 .net "p", 0 0, v0x1221140_0; 1 drivers
+E_0x12206b0 .event edge, v0x1220630_0, v0x1220dc0_0;
+S_0x11d3690 .scope module, "tab" "pred_table" 2 39, 4 2, S_0x11e6c60;
+ .timescale 0 0;
+L_0x1221370 .functor BUFZ 2, L_0x1221280, C4<00>, C4<00>, C4<00>;
+v0x11d3780_0 .net *"_s0", 1 0, L_0x1221280; 1 drivers
+v0x12204f0_0 .net "clk", 0 0, v0x1220ef0_0; 1 drivers
+v0x1220590_0 .alias "din", 1 0, v0x1220fa0_0;
+v0x1220630_0 .alias "dout", 1 0, v0x1221070_0;
+v0x12206e0_0 .net "line", 6 0, v0x1220e40_0; 1 drivers
+v0x1220780 .array "memory", 127 0, 1 0;
+v0x1220840_0 .net "reset", 0 0, v0x12211c0_0; 1 drivers
+E_0x120a400 .event posedge, v0x1220840_0;
+E_0x11e6d50 .event posedge, v0x12204f0_0;
+L_0x1221280 .array/port v0x1220780, v0x1220e40_0;
+    .scope S_0x12208e0;
+T_0 ;
+    %wait E_0x12206b0;
+    %load/v 8, v0x1220c40_0, 2;
+    %cmpi/u 8, 0, 2;
+    %jmp/1 T_0.0, 6;
+    %cmpi/u 8, 1, 2;
+    %jmp/1 T_0.1, 6;
+    %cmpi/u 8, 2, 2;
+    %jmp/1 T_0.2, 6;
+    %cmpi/u 8, 3, 2;
+    %jmp/1 T_0.3, 6;
+    %jmp T_0.4;
+T_0.0 ;
+    %load/v 8, v0x1220dc0_0, 1;
+    %jmp/0xz  T_0.5, 8;
+    %movi 8, 1, 2;
+    %set/v v0x1220d10_0, 8, 2;
+    %jmp T_0.6;
+T_0.5 ;
+    %set/v v0x1220d10_0, 0, 2;
+T_0.6 ;
+    %jmp T_0.4;
+T_0.1 ;
+    %load/v 8, v0x1220dc0_0, 1;
+    %jmp/0xz  T_0.7, 8;
+    %movi 8, 2, 2;
+    %set/v v0x1220d10_0, 8, 2;
+    %jmp T_0.8;
+T_0.7 ;
+    %set/v v0x1220d10_0, 0, 2;
+T_0.8 ;
+    %jmp T_0.4;
+T_0.2 ;
+    %load/v 8, v0x1220dc0_0, 1;
+    %jmp/0xz  T_0.9, 8;
+    %set/v v0x1220d10_0, 1, 2;
+    %jmp T_0.10;
+T_0.9 ;
+    %movi 8, 1, 2;
+    %set/v v0x1220d10_0, 8, 2;
+T_0.10 ;
+    %jmp T_0.4;
+T_0.3 ;
+    %load/v 8, v0x1220dc0_0, 1;
+    %jmp/0xz  T_0.11, 8;
+    %set/v v0x1220d10_0, 1, 2;
+    %jmp T_0.12;
+T_0.11 ;
+    %movi 8, 2, 2;
+    %set/v v0x1220d10_0, 8, 2;
+T_0.12 ;
+    %jmp T_0.4;
+T_0.4 ;
+    %jmp T_0;
+    .thread T_0, $push;
+    .scope S_0x11d3690;
+T_1 ;
+    %wait E_0x11e6d50;
+    %load/v 8, v0x1220590_0, 2;
+    %ix/getv 3, v0x12206e0_0;
+    %jmp/1 t_0, 4;
+    %ix/load 0, 2, 0; word width
+    %ix/load 1, 0, 0; part off
+    %assign/av v0x1220780, 0, 8;
+t_0 ;
+    %jmp T_1;
+    .thread T_1;
+    .scope S_0x11d3690;
+T_2 ;
+    %wait E_0x120a400;
+    %load/v 8, v0x1220840_0, 1;
+    %jmp/0xz  T_2.0, 8;
+    %ix/load 3, 0, 0; address
+    %ix/load 0, 2, 0; word width
+    %ix/load 1, 0, 0; part off
+    %assign/av v0x1220780, 0, 1;
+t_1 ;
+    %movi 8, 2, 2;
+    %ix/load 3, 1, 0; address
+    %ix/load 0, 2, 0; word width
+    %ix/load 1, 0, 0; part off
+    %assign/av v0x1220780, 0, 8;
+t_2 ;
+    %movi 8, 1, 2;
+    %ix/load 3, 2, 0; address
+    %ix/load 0, 2, 0; word width
+    %ix/load 1, 0, 0; part off
+    %assign/av v0x1220780, 0, 8;
+t_3 ;
+    %ix/load 3, 3, 0; address
+    %ix/load 0, 2, 0; word width
+    %ix/load 1, 0, 0; part off
+    %assign/av v0x1220780, 0, 0;
+t_4 ;
+T_2.0 ;
+    %jmp T_2;
+    .thread T_2;
+    .scope S_0x11e6c60;
+T_3 ;
+    %set/v v0x12211c0_0, 0, 1;
+    %end;
+    .thread T_3;
+    .scope S_0x11e6c60;
+T_4 ;
+    %set/v v0x1220e40_0, 0, 7;
+    %end;
+    .thread T_4;
+    .scope S_0x11e6c60;
+T_5 ;
+    %set/v v0x1221140_0, 0, 1;
+    %end;
+    .thread T_5;
+    .scope S_0x11e6c60;
+T_6 ;
+    %vpi_call 2 19 "$dumpfile", "test.vcd";
+    %vpi_call 2 20 "$dumpvars", 1'sb0, S_0x11e6c60;
+    %delay 2, 0;
+    %set/v v0x12211c0_0, 1, 1;
+    %delay 2, 0;
+    %set/v v0x12211c0_0, 0, 1;
+    %delay 2, 0;
+    %movi 8, 2, 7;
+    %set/v v0x1220e40_0, 8, 7;
+    %delay 10, 0;
+    %set/v v0x1221140_0, 1, 1;
+    %delay 10, 0;
+    %movi 8, 2, 7;
+    %set/v v0x1220e40_0, 8, 7;
+    %delay 10, 0;
+    %set/v v0x1221140_0, 0, 1;
+    %delay 10, 0;
+    %set/v v0x1221140_0, 1, 1;
+    %delay 10, 0;
+    %vpi_call 2 28 "$finish";
+    %end;
+    .thread T_6;
+    .scope S_0x11e6c60;
+T_7 ;
+    %set/v v0x1220ef0_0, 0, 1;
+    %end;
+    .thread T_7;
+    .scope S_0x11e6c60;
+T_8 ;
+    %delay 1, 0;
+    %load/v 8, v0x1220ef0_0, 1;
+    %inv 8, 1;
+    %set/v v0x1220ef0_0, 8, 1;
+    %jmp T_8;
+    .thread T_8;
+    .scope S_0x11e6c60;
+T_9 ;
+    %vpi_call 2 42 "$monitor", "At time %t, address = %0d  dout = %0d", $time, v0x1220e40_0, v0x1221070_0;
+    %end;
+    .thread T_9;
+# The file index is used to find the file name in the following table.
+:file_names 5;
+    "N/A";
+    "<interactive>";
+    "preditor_tb.v";
+    "fsm_pred.v";
+    "preditor_table.v";
